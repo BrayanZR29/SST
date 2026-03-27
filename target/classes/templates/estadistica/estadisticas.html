@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadisticas - SG-SST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #F8F9FA; }
+        .sidebar {
+            background: linear-gradient(180deg, #2E86AB 0%, #1a5f7a 100%);
+            min-height: 100vh;
+            color: white;
+            position: fixed;
+            width: 250px;
+        }
+        .sidebar .nav-link { color: rgba(255,255,255,0.85); border-radius: 8px; margin: 4px 12px; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+        .main-content { margin-left: 250px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="text-center py-4">
+            <i class="bi bi-shield-check fs-2"></i>
+            <h5 class="mt-2 mb-0">SG-SST</h5>
+        </div>
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/evento/lista}"><i class="bi bi-clipboard-data me-2"></i>Eventos</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/evento/nuevo}"><i class="bi bi-plus-circle me-2"></i>Registrar</a></li>
+            <li class="nav-item"><a class="nav-link active" th:href="@{/estadisticas}"><i class="bi bi-bar-chart me-2"></i>Estadisticas</a></li>
+            <li class="nav-item mt-5">
+                <form th:action="@{/logout}" method="post"><button type="submit" class="nav-link border-0 bg-transparent w-100 text-start"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesion</button></form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content p-4">
+        <h2 class="mb-4">Estadisticas y Reportes</h2>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Total Accidentes</h6>
+                        <h2 class="text-danger" th:text="${resumen.totalAccidentes ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Total Incidentes</h6>
+                        <h2 class="text-warning" th:text="${resumen.totalIncidentes ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Casos Abiertos</h6>
+                        <h2 class="text-danger" th:text="${resumen.totalAbiertos ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Casos Cerrados</h6>
+                        <h2 class="text-success" th:text="${resumen.totalCerrados ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Eventos por Mes</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoPorMes"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Eventos por Area</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoPorArea"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Por Tipo</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoPorTipo"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Por Gravedad</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoPorGravedad"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        const porMes = /*[[${porMes}]]*/ {};
+        const porArea = /*[[${porArea}]]*/ {};
+        const porTipo = /*[[${porTipo}]]*/ {};
+        const porGravedad = /*[[${porGravedad}]]*/ {};
+
+        new Chart(document.getElementById('graficoPorMes'), {
+            type: 'bar',
+            data: {
+                labels: Object.keys(porMes),
+                datasets: [{
+                    label: 'Eventos',
+                    data: Object.values(porMes),
+                    backgroundColor: '#2E86AB'
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('graficoPorArea'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(porArea),
+                datasets: [{ data: Object.values(porArea), backgroundColor: ['#2E86AB', '#A23B72', '#F18F01', '#28A745', '#DC3545'] }]
+            },
+            options: { responsive: true }
+        });
+
+        new Chart(document.getElementById('graficoPorTipo'), {
+            type: 'pie',
+            data: {
+                labels: Object.keys(porTipo),
+                datasets: [{ data: Object.values(porTipo), backgroundColor: ['#DC3545', '#FFC107', '#28A745'] }]
+            },
+            options: { responsive: true }
+        });
+
+        new Chart(document.getElementById('graficoPorGravedad'), {
+            type: 'pie',
+            data: {
+                labels: Object.keys(porGravedad),
+                datasets: [{ data: Object.values(porGravedad), backgroundColor: ['#28A745', '#FFC107', '#DC3545'] }]
+            },
+            options: { responsive: true }
+        });
+    </script>
+</body>
+</html>

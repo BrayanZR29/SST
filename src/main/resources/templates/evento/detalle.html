@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Evento - SG-SST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #F8F9FA; }
+        .sidebar {
+            background: linear-gradient(180deg, #2E86AB 0%, #1a5f7a 100%);
+            min-height: 100vh;
+            color: white;
+            position: fixed;
+            width: 250px;
+        }
+        .sidebar .nav-link { color: rgba(255,255,255,0.85); border-radius: 8px; margin: 4px 12px; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+        .main-content { margin-left: 250px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="text-center py-4">
+            <i class="bi bi-shield-check fs-2"></i>
+            <h5 class="mt-2 mb-0">SG-SST</h5>
+        </div>
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/evento/lista}"><i class="bi bi-clipboard-data me-2"></i>Eventos</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/evento/nuevo}"><i class="bi bi-plus-circle me-2"></i>Registrar</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/estadisticas}"><i class="bi bi-bar-chart me-2"></i>Estadisticas</a></li>
+            <li class="nav-item mt-5">
+                <form th:action="@{/logout}" method="post"><button type="submit" class="nav-link border-0 bg-transparent w-100 text-start"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesion</button></form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <a th:href="@{/evento/lista}" class="text-decoration-none text-muted"><i class="bi bi-arrow-left me-2"></i>Volver</a>
+                <h2 class="mt-2 mb-0"><span th:text="${evento.codigo}">ACC-001</span></h2>
+            </div>
+            <div>
+                <a th:href="@{/evento/editar/{id}(id=${evento.id})}" class="btn btn-outline-primary"><i class="bi bi-pencil me-2"></i>Editar</a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Datos del Evento</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="text-muted small">Tipo</label>
+                                <p class="mb-0 fw-medium" th:text="${evento.tipo.descripcion}">Accidente</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small">Gravedad</label>
+                                <p class="mb-0">
+                                    <span class="badge" th:classappend="${evento.gravedad.name() == 'LEVE' ? 'bg-success' : evento.gravedad.name() == 'GRAVE' ? 'bg-warning text-dark' : 'bg-danger'}"
+                                          th:text="${evento.gravedad.descripcion}">Grave</span>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small">Estado</label>
+                                <p class="mb-0">
+                                    <span class="badge" th:classappend="${evento.estado.name() == 'ABIERTO' ? 'bg-danger' : evento.estado.name() == 'EN_PROCESO' ? 'bg-warning text-dark' : 'bg-success'}"
+                                          th:text="${evento.estado.descripcion}">Abierto</span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Fecha y Hora</label>
+                                <p class="mb-0" th:text="${#temporals.format(evento.fechaHora, 'dd/MM/yyyy HH:mm')}">15/03/2026 08:30</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Lugar / Area</label>
+                                <p class="mb-0" th:text="${evento.lugar}">Almacen</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="text-muted small">Personas Involucradas</label>
+                                <p class="mb-0" th:text="${evento.personasInvolucradas} ?: 'No especificadas'">Carlos Mendoza, Juan Perez</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="text-muted small">Descripcion</label>
+                                <p class="mb-0" th:text="${evento.descripcion}">El trabajador realizaba labores de descarga...</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="text-muted small">Consecuencias</label>
+                                <p class="mb-0" th:text="${evento.consecuencias} ?: 'Sin consecuencias registradas'">Contusion en brazo derecho</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4" th:if="${evento.investigacion != null}">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-search me-2"></i>Investigacion</h5>
+                        <small class="text-muted">Investigado por: <span th:text="${evento.investigacion.investigador.nombre}">Maria Lopez</span></small>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="text-muted small">Causa Inmediata</label>
+                            <p th:text="${evento.investigacion.causaInmediata}">Caida por superficie mojada</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted small">Causas Basicas</label>
+                            <p th:text="${evento.investigacion.causaBasica}">No se uso senalizacion de piso mojado</p>
+                        </div>
+                        <div class="mb-0">
+                            <label class="text-muted small">Factores Contributorios</label>
+                            <p th:text="${evento.investigacion.factoresContribuitorios}">Personal sin entrenamiento de SST</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" th:if="${evento.investigacion != null and !#lists.isEmpty(evento.investigacion.accionesCorrectivas)}">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-check2-square me-2"></i>Acciones Correctivas</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Descripcion</th>
+                                    <th>Responsable</th>
+                                    <th>Fecha Limite</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="accion : ${evento.investigacion.accionesCorrectivas}">
+                                    <td th:text="${accion.descripcion}">Colocar senalizacion de piso mojado</td>
+                                    <td th:text="${accion.responsable}">Juan Torres</td>
+                                    <td th:text="${#temporals.format(accion.fechaLimite, 'dd/MM/yyyy')}">20/03/2026</td>
+                                    <td>
+                                        <span class="badge" th:classappend="${accion.estadoAccion.name() == 'COMPLETADA' ? 'bg-success' : 'bg-warning text-dark'}"
+                                              th:text="${accion.estadoAccion.descripcion}">Pendiente</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-person me-2"></i>Informacion</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2"><small class="text-muted">Registrado por:</small><br><span th:text="${evento.usuarioRegistra.nombre}">Juan Perez</span></p>
+                        <p class="mb-2"><small class="text-muted">Fecha de registro:</small><br><span th:text="${#temporals.format(evento.fechaCreacion, 'dd/MM/yyyy HH:mm')}">15/03/2026 09:00</span></p>
+                        <p class="mb-0"><small class="text-muted">Ultima actualizacion:</small><br><span th:text="${#temporals.format(evento.fechaActualizacion, 'dd/MM/yyyy HH:mm')}">15/03/2026 09:00</span></p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <a th:href="@{/investigacion/nueva/{id}(id=${evento.id})}" class="btn btn-primary w-100 mb-2" th:if="${evento.investigacion == null}">
+                            <i class="bi bi-search me-2"></i>Realizar Investigacion
+                        </a>
+                        <a th:href="@{/investigacion/detalle/{id}(id=${evento.id})}" class="btn btn-outline-primary w-100 mb-2" th:if="${evento.investigacion != null}">
+                            <i class="bi bi-eye me-2"></i>Ver Investigacion
+                        </a>
+                        <form th:action="@{/evento/cerrar/{id}(id=${evento.id})}" method="post" th:if="${evento.estado != T(com.sst.registro.model.enums.EstadoEvento).CERRADO}">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-check-circle me-2"></i>Cerrar Caso
+                            </button>
+                        </form>
+                        <div class="d-grid gap-2 mt-3">
+                            <a th:href="@{/evento/lista}" class="btn btn-outline-secondary">Volver a la lista</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
