@@ -1,10 +1,5 @@
 @startuml ActividadesRegistro
-!theme plain
-
-title Diagrama de Actividades - Registrar Evento
-
 start
-
 :Iniciar Sesión (Login);
 
 if (¿Credenciales válidas?) then (No)
@@ -14,9 +9,7 @@ else (Sí)
 endif
 
 :Mostrar Menú Principal;
-
 :Seleccionar "Registrar Evento";
-
 :Ingresar datos del evento;
 
 if (¿Datos válidos?) then (No)
@@ -27,20 +20,15 @@ else (Sí)
 endif
 
 :Guardar Evento;
-
 :Generar Código (ACC-001);
-
 :Mostrar mensaje "Registro exitoso";
 
 if (¿Registrar otro?) then (Sí)
     :Limpiar formulario;
     :Volver a ingresar datos;
-    note right: Ir a "Ingresar datos"
 else (No)
 endif
 
 :Volver al Menú Principal;
-
 stop
-
 @enduml

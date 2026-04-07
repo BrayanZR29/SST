@@ -1,8 +1,4 @@
 @startuml ActividadesInvestigacion
-!theme plain
-
-title Diagrama de Actividades - Investigar Evento
-
 start
 
 :Seleccionar Evento a Investigar;
@@ -18,9 +14,9 @@ else (No)
 endif
 
 :Ingresar datos de investigación;
-  - Causa inmediata
-  - Causa básica
-  - Factores contributorios
+:Ingresar causa inmediata;
+:Ingresar causa básica;
+:Ingresar factores contributorios;
 
 if (¿Datos válidos?) then (No)
     :Mostrar errores;
@@ -36,17 +32,12 @@ repeat
     :Asignar responsable;
     :Definir fecha límite;
     if (¿Agregar otra?) then (Sí)
-        :Agregar más acciones;
     endif
 repeat while (¿Agregar otra?) is (Sí)
 ->No;
 
 :Guardar Investigación;
-
 :Actualizar estado a "En Proceso";
-
 :Mostrar mensaje "Investigación guardada";
-
 stop
-
 @enduml

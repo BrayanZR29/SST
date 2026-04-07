@@ -1,8 +1,4 @@
 @startuml DiagramaClases
-!theme plain
-
-title Diagrama de Clases - SST-Registro
-
 package "enums" {
     enum RolUsuario {
         ADMIN
@@ -46,8 +42,6 @@ package "model.entity" {
         - area: String
         - activo: Boolean
         - fechaCreacion: LocalDateTime
-        + getters()
-        + setters()
     }
     
     class Evento {
@@ -63,10 +57,6 @@ package "model.entity" {
         - personasInvolucradas: String
         - fechaCreacion: LocalDateTime
         - fechaActualizacion: LocalDateTime
-        + getters()
-        + setters()
-        + generarCodigo(): String
-        + cerrar(): void
     }
     
     class Investigacion {
@@ -75,8 +65,6 @@ package "model.entity" {
         - causaBasica: String
         - factoresContribuitorios: String
         - fechaInvestigacion: LocalDateTime
-        + getters()
-        + setters()
     }
     
     class AccionCorrectiva {
@@ -86,10 +74,6 @@ package "model.entity" {
         - fechaLimite: LocalDate
         - estadoAccion: EstadoAccion
         - fechaCompletado: LocalDate
-        + getters()
-        + setters()
-        + completar(): void
-        + estaVencada(): boolean
     }
 }
 
@@ -104,20 +88,15 @@ package "model.dto" {
         - fechaHora: String
         - lugar: String
         - descripcion: String
-        + getters()
-        + setters()
-        + of(Evento): EventoDTO
     }
     
     class EstadisticaDTO {
         - totalAccidentes: Integer
         - totalIncidentes: Integer
         - porMes: Map<String, Integer>
-        + getters()
     }
 }
 
-' Relaciones
 Usuario "1" --> "*" Evento : registra
 Evento "1" --> "1" Investigacion : tiene
 Investigacion "1" --> "*" AccionCorrectiva : tiene
@@ -128,5 +107,4 @@ Evento --> TipoEvento
 Evento --> Gravedad
 Evento --> EstadoEvento
 AccionCorrectiva --> EstadoAccion
-
 @enduml

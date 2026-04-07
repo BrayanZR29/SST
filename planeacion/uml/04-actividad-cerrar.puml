@@ -1,8 +1,4 @@
 @startuml ActividadesCerrar
-!theme plain
-
-title Diagrama de Actividades - Cerrar Caso
-
 start
 
 :Seleccionar Evento;
@@ -29,11 +25,7 @@ else (Sí)
 endif
 
 :Registrar fecha de cierre;
-
 :Actualizar estado a CERRADO;
-
 :Mostrar "Caso cerrado exitosamente";
-
 stop
-
 @enduml

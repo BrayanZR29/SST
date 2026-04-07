@@ -1,8 +1,4 @@
 @startuml Componentes
-!theme plain
-
-title Diagrama de Componentes - Arquitectura SST-Registro
-
 package "Presentation Layer" {
     [Login Controller]
     [Dashboard Controller]
@@ -41,7 +37,6 @@ package "Domain" {
     [Evento Entity]
     [Investigacion Entity]
     [AccionCorrectiva Entity]
-    
     [Enums]
 }
 
@@ -59,7 +54,6 @@ package "Database" {
     }
 }
 
-' Conexiones
 [Login Controller] ..> [Usuario Service]
 [Dashboard Controller] ..> [Evento Service]
 [Evento Controller] ..> [Evento Service]
@@ -87,5 +81,4 @@ package "Database" {
 
 [Evento Service] ..> [MySQL]
 [Usuario Service] ..> [MySQL]
-
 @enduml

@@ -1,17 +1,11 @@
 @startuml CasosDeUso
-!theme plain
-
-title Diagrama de Casos de Uso - SST-Registro
-
 left to right direction
 
-' Actores
 actor Trabajador as t
 actor "Jefe de Área" as j
 actor "Responsable SST" as r
 actor Administrador as a
 
-' Casos de Uso
 package "Gestión de Acceso" {
     usecase "UC-1: Login" as login
     usecase "UC-2: Cerrar Sesión" as logout
@@ -40,8 +34,6 @@ package "Administración" {
     usecase "UC-13: Gestionar Usuarios" as usuarios
     usecase "UC-14: Configurar Sistema" as configurar
 }
-
-' Relaciones Actor - Caso de Uso
 
 t --> login
 t --> logout
@@ -85,7 +77,6 @@ a --> reportes
 a --> usuarios
 a --> configurar
 
-' Extensiones e Include
 registrar ..> login : <<include>>
 logout ..> login : <<include>>
 dashboard ..> login : <<include>>
@@ -94,5 +85,4 @@ detalle ..> login : <<include>>
 investigar ..> consultar : <<extend>>
 acciones ..> investigar : <<extend>>
 cerrar ..> acciones : <<extend>>
-
 @enduml
