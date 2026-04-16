@@ -67,9 +67,10 @@ public class EventoController {
     }
     
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Evento evento, Authentication auth) {
+    public String guardar(@ModelAttribute Evento evento, Authentication auth, Model model) {
         Usuario usuario = usuarioService.buscarPorCorreo(auth.getName());
         eventoService.guardar(evento, usuario);
+        model.addAttribute("success", "Evento guardado correctamente");
         return "redirect:/evento/lista";
     }
     
