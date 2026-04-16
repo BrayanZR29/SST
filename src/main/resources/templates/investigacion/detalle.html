@@ -8,141 +8,128 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body { background-color: #F8F9FA; }
-        .sidebar {
-            background: linear-gradient(180deg, #2E86AB 0%, #1a5f7a 100%);
-            min-height: 100vh;
-            color: white;
-            position: fixed;
-            width: 250px;
-        }
-        .sidebar .nav-link { color: rgba(255,255,255,0.85); border-radius: 8px; margin: 4px 12px; }
-        .sidebar .nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
-        .main-content { margin-left: 250px; }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="text-center py-4">
-            <i class="bi bi-shield-check fs-2"></i>
-            <h5 class="mt-2 mb-0">SG-SST</h5>
-        </div>
-        <ul class="nav flex-column mt-3">
-            <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" th:href="@{/evento/lista}"><i class="bi bi-clipboard-data me-2"></i>Eventos</a></li>
-            <li class="nav-item mt-5">
-                <form th:action="@{/logout}" method="post"><button type="submit" class="nav-link border-0 bg-transparent w-100 text-start"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesion</button></form>
-            </li>
-        </ul>
-    </div>
-
-    <div class="main-content p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <a th:href="@{/evento/detalle/{id}(id=${eventoId})}" class="text-decoration-none text-muted">
-                    <i class="bi bi-arrow-left me-2"></i>Volver al Evento
-                </a>
-                <h2 class="mt-2 mb-0">Detalle de Investigacion</h2>
-            </div>
-            <a th:href="@{/evento/detalle/{id}(id=${eventoId})}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Agregar Accion
-            </a>
-        </div>
-
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
-                <div class="card mb-4" th:if="${investigacion != null}">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-search me-2"></i>Datos de la Investigacion</h5>
+            <nav class="col-md-2 d-md-block sidebar collapse" th:replace="~{layout/base :: sidebar}"></nav>
+            <main class="col-md-10 ms-sm-auto px-md-4">
+                <nav class="navbar navbar-expand-lg navbar-light bg-white rounded-3 my-3 shadow-sm">
+                    <div class="container-fluid">
+                        <span class="navbar-brand">
+                            <i class="bi bi-shield-check text-primary me-2"></i>
+                            <strong>Sistema de Gestion de SST</strong>
+                        </span>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label class="text-muted small">Causa Inmediata</label>
-                            <p class="mb-0" th:text="${investigacion.causaInmediata}">-</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="text-muted small">Causas Basicas</label>
-                            <p class="mb-0" th:text="${investigacion.causaBasica}">-</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="text-muted small">Factores Contributorios</label>
-                            <p class="mb-0" th:text="${investigacion.factoresContribuitorios} ?: '-'">-</p>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="text-muted small">Fecha de Investigacion</label>
-                                <p class="mb-0" th:text="${#temporals.format(investigacion.fechaInvestigacion, 'dd/MM/yyyy HH:mm')}">-</p>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="text-muted small">Investigador</label>
-                                <p class="mb-0" th:text="${investigacion.investigador.nombre}">-</p>
-                            </div>
-                        </div>
+                </nav>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <a th:href="@{/evento/detalle/{id}(id=${eventoId})}" class="text-decoration-none text-muted">
+                            <i class="bi bi-arrow-left me-2"></i>Volver al Evento
+                        </a>
+                        <h2 class="mt-2 mb-0">Detalle de Investigacion</h2>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-check2-square me-2"></i>Acciones Correctivas</h5>
-                    </div>
-                    <div class="card-body">
-                        <div th:if="${#lists.isEmpty(acciones)}" class="text-center text-muted py-4">
-                            <i class="bi bi-inbox fs-1"></i>
-                            <p class="mb-0 mt-2">No hay acciones correctivas registradas</p>
-                        </div>
-                        <div th:each="accion : ${acciones}" class="border rounded p-3 mb-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="mb-1 fw-medium" th:text="${accion.descripcion}">Descripcion de la accion</p>
-                                    <small class="text-muted">
-                                        <i class="bi bi-person me-1"></i><span th:text="${accion.responsable}">Responsable</span> |
-                                        <i class="bi bi-calendar me-1"></i><span th:text="${#temporals.format(accion.fechaLimite, 'dd/MM/yyyy')}">20/03/2026</span>
-                                    </small>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card mb-4" th:if="${investigacion != null}">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="bi bi-search me-2"></i>Datos de la Investigacion</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="text-muted small">Causa Inmediata</label>
+                                    <p class="mb-0" th:text="${investigacion.causaInmediata}">-</p>
                                 </div>
-                                <div class="d-flex gap-2">
-                                    <form th:action="@{/investigacion/accion/completar/{id}(id=${accion.id})}" method="post">
-                                        <input type="hidden" name="eventoId" th:value="${eventoId}">
-                                        <button type="submit" class="btn btn-sm btn-success" th:if="${accion.estadoAccion.name() == 'PENDIENTE'}">
-                                            <i class="bi bi-check"></i>
-                                        </button>
-                                    </form>
-                                    <span class="badge" th:classappend="${accion.estadoAccion.name() == 'COMPLETADA' ? 'bg-success' : 'bg-warning text-dark'}"
-                                          th:text="${accion.estadoAccion.descripcion}">Pendiente</span>
+                                <div class="mb-3">
+                                    <label class="text-muted small">Causas Basicas</label>
+                                    <p class="mb-0" th:text="${investigacion.causaBasica}">-</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-muted small">Factores Contributorios</label>
+                                    <p class="mb-0" th:text="${investigacion.factoresContribuitorios} ?: '-'">-</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="text-muted small">Fecha de Investigacion</label>
+                                        <p class="mb-0" th:text="${#temporals.format(investigacion.fechaInvestigacion, 'dd/MM/yyyy HH:mm')}">-</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="text-muted small">Investigador</label>
+                                        <p class="mb-0" th:text="${investigacion.investigador.nombre}">-</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nueva Accion Correctiva</h5>
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="bi bi-check2-square me-2"></i>Acciones Correctivas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div th:if="${#lists.isEmpty(acciones)}" class="text-center text-muted py-4">
+                                    <i class="bi bi-inbox fs-1"></i>
+                                    <p class="mb-0 mt-2">No hay acciones correctivas registradas</p>
+                                </div>
+                                <div th:each="accion : ${acciones}" class="border rounded p-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <p class="mb-1 fw-medium" th:text="${accion.descripcion}">Descripcion de la accion</p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-person me-1"></i><span th:text="${accion.responsable}">Responsable</span> |
+                                                <i class="bi bi-calendar me-1"></i><span th:text="${#temporals.format(accion.fechaLimite, 'dd/MM/yyyy')}">20/03/2026</span>
+                                            </small>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <form th:action="@{/investigacion/accion/completar/{id}(id=${accion.id})}" method="post">
+                                                <input type="hidden" name="eventoId" th:value="${eventoId}">
+                                                <button type="submit" class="btn btn-sm btn-success" th:if="${accion.estadoAccion.name() == 'PENDIENTE'}">
+                                                    <i class="bi bi-check"></i>
+                                                </button>
+                                            </form>
+                                            <span class="badge" th:classappend="${accion.estadoAccion.name() == 'COMPLETADA' ? 'bg-success' : 'bg-warning text-dark'}"
+                                                  th:text="${accion.estadoAccion.descripcion}">Pendiente</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form th:action="@{/investigacion/accion/agregar}" method="post">
-                            <input type="hidden" name="investigacionId" th:value="${investigacion.id}">
-                            <input type="hidden" name="eventoId" th:value="${eventoId}">
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Descripcion *</label>
-                                <textarea name="descripcion" class="form-control" rows="3" required></textarea>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nueva Accion Correctiva</h5>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Responsable *</label>
-                                <input type="text" name="responsable" class="form-control" required>
+                            <div class="card-body">
+                                <form th:action="@{/investigacion/accion/agregar}" method="post">
+                                    <input type="hidden" name="investigacionId" th:value="${investigacion.id}">
+                                    <input type="hidden" name="eventoId" th:value="${eventoId}">
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Descripcion *</label>
+                                        <textarea name="descripcion" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Responsable *</label>
+                                        <input type="text" name="responsable" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Fecha Limite *</label>
+                                        <input type="date" name="fechaLimite" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-plus-circle me-2"></i>Agregar Accion
+                                    </button>
+                                </form>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Fecha Limite *</label>
-                                <input type="date" name="fechaLimite" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-plus-circle me-2"></i>Agregar Accion
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
