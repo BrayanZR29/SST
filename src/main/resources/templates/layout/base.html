@@ -41,7 +41,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
+            <!-- Sidebar para desktop -->
             <nav class="col-md-2 d-none d-md-block sidebar" th:fragment="sidebar">
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
@@ -87,9 +87,14 @@
 
             <!-- Contenido principal -->
             <main class="col-md-10">
-                <!-- Navbar -->
+                <!-- Navbar con boton menu para mobiles -->
                 <nav class="navbar navbar-expand-lg navbar-light bg-white rounded-3 my-3 shadow-sm" th:fragment="navbar">
                     <div class="container-fluid">
+                        <!--Boton menu mobile -->
+                        <button class="btn d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+                            <i class="bi bi-list fs-4"></i>
+                        </button>
+                        
                         <span class="navbar-brand">
                             <i class="bi bi-shield-check text-primary me-2"></i>
                             <strong>Sistema de Gestion de SST</strong>
@@ -102,6 +107,51 @@
                         </div>
                     </div>
                 </nav>
+
+                <!-- Menu lateral para mobile (offcanvas) -->
+                <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarMenu">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title"><i class="bi bi-shield-check me-2"></i>SG-SST</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+                    </div>
+                    <div class="offcanvas-body sidebar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/dashboard}">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/evento/lista}">
+                                    <i class="bi bi-clipboard-data me-2"></i>Eventos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/evento/nuevo}">
+                                    <i class="bi bi-plus-circle me-2"></i>Registrar
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/estadisticas}">
+                                    <i class="bi bi-bar-chart me-2"></i>Estadisticas
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'RESPONSABLE_SST')">
+                                <a class="nav-link" th:href="@{/admin/usuarios}">
+                                    <i class="bi bi-people me-2"></i>Usuarios
+                                </a>
+                            </li>
+                            <li class="nav-item mt-3">
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesion
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Aqui se inserta el contenido de cada pagina -->
                 <div th:replace="~{${content} :: content}"></div>
             </main>
