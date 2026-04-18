@@ -15,8 +15,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.SecureRandom;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -25,9 +23,6 @@ public class SecurityConfig {
     
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
-    
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

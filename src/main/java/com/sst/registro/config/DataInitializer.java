@@ -6,6 +6,7 @@ import com.sst.registro.repository.UsuarioRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class DataInitializer {
     
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
     
     @PostConstruct
     public void init() {
@@ -25,7 +27,7 @@ public class DataInitializer {
                 Usuario admin = new Usuario();
                 admin.setNombre("Administrador");
                 admin.setCorreo("admin@sgsst.com");
-                admin.setPassword("$2a$10$8K1p/a0dL3RXgQYL5W5v5.J9p5VVJR5hZ5V5Q5Y5W5v5VVJR5hZ"); // admin123 encriptado
+                admin.setPassword(passwordEncoder.encode("admin123"));
                 admin.setRol(RolUsuario.ADMIN);
                 admin.setArea("SST");
                 admin.setActivo(true);
