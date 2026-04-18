@@ -70,6 +70,10 @@ public class EventoService {
         return eventoRepository.findTop10ByOrderByFechaCreacionDesc();
     }
     
+    public List<Evento> buscarPorCodigoOLugar(String buscar) {
+        return eventoRepository.findByCodigoContainingOrLugarContaining(buscar, buscar);
+    }
+    
     public Long countByTipo(TipoEvento tipo) {
         return eventoRepository.countByTipo(tipo);
     }

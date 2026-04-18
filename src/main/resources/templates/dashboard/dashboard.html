@@ -59,14 +59,33 @@
                     </div>
                 </nav>
 
+                <!-- Mensaje de busqueda -->
+                <div th:if="${busqueda}" class="alert alert-info mt-3">
+                    <i class="bi bi-search me-2"></i>
+                    Resultados para: "<strong th:text="${busqueda}"></strong>" 
+                    (<span th:text="${#lists.size(eventosRecientes)}"></span> encontrados)
+                    <a th:href="@{/dashboard}" class="btn btn-sm btn-outline-secondary ms-3">Limpiar</a>
+                </div>
+
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h2 class="mb-1">Dashboard</h2>
                         <p class="text-muted mb-0">Bienvenido, <span sec:authentication="name"></span></p>
                     </div>
-                    <a th:href="@{/evento/nuevo}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i>Nuevo Evento
-                    </a>
+                    <div class="d-flex gap-2">
+                        <form th:action="@{/dashboard}" method="get" class="d-flex">
+                            <input type="text" name="buscar" class="form-control" placeholder="Buscar por codigo o lugar..." th:value="${buscar}">
+                            <button type="submit" class="btn btn-outline-primary ms-2">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <a th:href="@{/dashboard}" class="btn btn-outline-secondary ms-1" th:if="${buscar}">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </form>
+                        <a th:href="@{/evento/nuevo}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>Nuevo
+                        </a>
+                    </div>
                 </div>
 
                 <div class="row g-4 mb-4">

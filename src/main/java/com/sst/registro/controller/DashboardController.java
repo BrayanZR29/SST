@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,28 @@ public class DashboardController {
     private final InvestigacionService investigacionService;
     
     @GetMapping("/dashboard")
-    public String dashboard(Model model, Authentication authentication) {
+    public String dashboard(
+            Model model, 
+            Authentication authentication,
+            @RequestParam(required = false) String buscar) {
+        
         model.addAttribute("nombreUsuario", authentication.getName());
         
+        // Resumen de eventos
         Map<String, Long> resumen = estadisticaService.getResumenGeneral();
         model.addAttribute("resumen", resumen);
         
-        List<Evento> recientes = eventoService.listarRecientes();
-        model.addAttribute("eventosRecientes", recientes);
+        // Si hay busqueda, buscar eventos
+        List<Evento> eventos;
+        if (buscar != null && !buscar.trim().isEmpty()) {
+            eventos = eventoService.buscarPorCodigoOLugar(buscar.trim());
+            model.addAttribute("busqueda", buscar);
+        } else {
+            eventos = eventoService.listarRecientes();
+        }
+        model.addAttribute("eventosRecientes", eventos);
         
+        // Acciones pendientes
         var accionesPendientes = investigacionService.listarAccionesPendientes();
         model.addAttribute("accionesPendientes", accionesPendientes);
         

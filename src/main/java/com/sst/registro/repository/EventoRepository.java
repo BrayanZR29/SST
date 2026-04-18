@@ -43,6 +43,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     
     List<Evento> findTop10ByOrderByFechaCreacionDesc();
     
+    List<Evento> findByCodigoContainingOrLugarContaining(String codigo, String lugar);
+    
     @Query("SELECT COUNT(e) FROM Evento e WHERE e.tipo = :tipo")
     Long countByTipo(TipoEvento tipo);
     
