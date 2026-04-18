@@ -19,6 +19,17 @@
             background: linear-gradient(180deg, var(--primary) 0%, #1a5f7a 100%);
             min-height: 100vh;
             color: white;
+            width: 250px;
+            transition: all 0.3s;
+        }
+        .sidebar.collapsed {
+            margin-left: -250px;
+        }
+        .main-content {
+            transition: all 0.3s;
+        }
+        .main-content.expanded {
+            margin-left: 0;
         }
         .sidebar .nav-link {
             color: rgba(255,255,255,0.85);
@@ -41,8 +52,14 @@
 <body>
     <div class="container-fluid">
         <div class="row">
+            <!-- Boton toggle sidebar -->
+            <button class="btn btn-light position-fixed mt-3 ms-2 z-3 d-none d-md-block" 
+                    style="z-index: 1000;" onclick="toggleSidebar()">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+
             <!-- Sidebar para desktop -->
-            <nav class="col-md-2 d-none d-md-block sidebar" th:fragment="sidebar">
+            <nav class="col-md-2 d-none d-md-block sidebar" id="sidebar" th:fragment="sidebar">
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
                         <i class="bi bi-shield-check fs-2"></i>
@@ -86,7 +103,7 @@
             </nav>
 
             <!-- Contenido principal -->
-            <main class="col-md-10">
+            <main class="col-md-10 ms-0 ms-md-auto" id="mainContent">
                 <!-- Navbar con boton menu para mobiles -->
                 <nav class="navbar navbar-expand-lg navbar-light bg-white rounded-3 my-3 shadow-sm" th:fragment="navbar">
                     <div class="container-fluid">
@@ -158,5 +175,13 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('mainContent');
+            sidebar.classList.toggle('d-none');
+            main.classList.toggle('ms-0');
+        }
+    </script>
 </body>
 </html>
