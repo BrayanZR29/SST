@@ -102,7 +102,7 @@ public class EventoController {
             @RequestParam(required = false) EstadoEvento estado,
             @RequestParam(required = false) TipoEvento tipo,
             @RequestParam(required = false) Gravedad gravedad,
-            @RequestParam(required = false) String lugar) throws IOException {
+            @RequestParam(required = false) String lugar) throws Exception {
         
         List<Evento> eventos = eventoService.buscarConFiltros(estado, tipo, gravedad, lugar, null, null, 
             PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending())).getContent();
@@ -114,7 +114,7 @@ public class EventoController {
     }
     
     @GetMapping("/exportar/{id}/pdf")
-    public void exportarEventoIndividualPdf(@PathVariable Long id, HttpServletResponse response) throws IOException {
+    public void exportarEventoIndividualPdf(@PathVariable Long id, HttpServletResponse response) throws Exception {
         Evento evento = eventoService.buscarPorId(id);
         
         response.setContentType("application/pdf");

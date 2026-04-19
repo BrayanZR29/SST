@@ -149,6 +149,9 @@
 
                         <div class="card">
                             <div class="card-body">
+                                <a th:href="@{/evento/exportar/{id}/pdf(id=${evento.id})}" class="btn btn-outline-danger w-100 mb-2" target="_blank">
+                                    <i class="bi bi-file-earmark-pdf me-2"></i>Exportar PDF
+                                </a>
                                 <a th:href="@{/investigacion/nueva/{id}(id=${evento.id})}" class="btn btn-primary w-100 mb-2" th:if="${evento.investigacion == null}">
                                     <i class="bi bi-search me-2"></i>Realizar Investigacion
                                 </a>

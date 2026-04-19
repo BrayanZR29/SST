@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class ReporteService {
 
-    public void generarReporteEventos(HttpServletResponse response, java.util.List<Evento> eventos) throws IOException {
+    public void generarReporteEventos(HttpServletResponse response, java.util.List<Evento> eventos) throws Exception {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
@@ -82,7 +82,7 @@ public class ReporteService {
         document.close();
     }
 
-    public void generarReporteEventoIndividual(HttpServletResponse response, Evento evento) throws IOException {
+    public void generarReporteEventoIndividual(HttpServletResponse response, Evento evento) throws Exception {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
@@ -124,7 +124,7 @@ public class ReporteService {
         document.close();
     }
 
-    private void agregarCampo(Document document, String label, String valor, Font headerFont, Font normalFont) throws DocumentException {
+    private void agregarCampo(Document document, String label, String valor, Font headerFont, Font normalFont) throws Exception {
         Paragraph labelP = new Paragraph(label + ":", headerFont);
         labelP.setSpacingBefore(10);
         document.add(labelP);
