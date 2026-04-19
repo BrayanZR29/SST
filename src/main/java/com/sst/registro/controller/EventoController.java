@@ -104,8 +104,15 @@ public class EventoController {
             @RequestParam(required = false) Gravedad gravedad,
             @RequestParam(required = false) String lugar) throws Exception {
         
-        List<Evento> eventos = eventoService.buscarConFiltros(estado, tipo, gravedad, lugar, null, null, 
-            PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending())).getContent();
+        Page<Evento> eventosPage;
+        if (estado == null && tipo == null && gravedad == null && (lugar == null || lugar.isEmpty())) {
+            eventosPage = eventoService.listarTodos(PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending()));
+        } else {
+            eventosPage = eventoService.buscarConFiltros(estado, tipo, gravedad, lugar, null, null, 
+                PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending()));
+        }
+        
+        List<Evento> eventos = eventosPage.getContent();
         
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=reporte_eventos.pdf");
