@@ -2,170 +2,161 @@
 
 ## Descripción
 
-SST es una aplicación web desarrollada con Spring Boot para la gestión de seguridad y salud en el trabajo. Permite registrar eventos, realizar investigaciones, gestionar acciones correctivas y administrar usuarios con diferentes roles.
+SST es una aplicación web desarrollada con Spring Boot para la gestión de seguridad y salud en el trabajo. Permite registrar eventos, realizar investigaciones, gestionar acciones correctivas y generar reportes PDF.
 
 ## Características
 
-- **Gestión de Usuarios**: Registro y autenticación de usuarios con roles (Admin, Responsable SST, Jefe de Área, Trabajador).
-- **Registro de Eventos**: Creación y gestión de eventos relacionados con seguridad.
-- **Investigaciones**: Realización de investigaciones sobre eventos, incluyendo causas inmediatas, básicas y factores contribuyentes.
-- **Acciones Correctivas**: Asignación y seguimiento de acciones correctivas con estados (Pendiente, Completada).
-- **Interfaz Web**: Interfaz de usuario basada en Thymeleaf con plantillas responsivas.
-- **Seguridad**: Autenticación y autorización usando Spring Security.
-- **Base de Datos**: Soporte para MySQL y H2 (para desarrollo).
+- **Gestión de Usuarios**: Registro y autenticación con roles (Admin, Responsable SST, Jefe de Área, Trabajador)
+- **Registro de Eventos**: Accidentes, incidentes y enfermedades profesionales
+- **Investigaciones**: Análisis de causas (inmediatas, básicas) y factores participantes
+- **Acciones Correctivas**: Asignación y seguimiento con estados (Pendiente, Completada, Vencida)
+- **Dashboard**: Vista general con estadísticas y eventos recientes
+- **Reportes PDF**: Exportación de eventos y estadísticas
+- **Interaz Web**: Thymeleaf con diseño responsivo
+- **Seguridad**: Spring Security con autenticación
 
-## Tecnologías Utilizadas
+## Tecnologías
 
-- **Backend**: Java 17, Spring Boot 3.2.0
-- **Base de Datos**: MySQL 9.0 (producción), H2 (desarrollo)
-- **Frontend**: Thymeleaf, HTML, CSS, JavaScript
-- **Seguridad**: Spring Security
-- **ORM**: Hibernate/JPA
-- **Build Tool**: Maven
-- **Otros**: Lombok, Validation, iText (para reportes PDF)
+| Tecnología | Versión |
+|------------|--------|
+| Java | 17 |
+| Spring Boot | 3.2.0 |
+| MySQL | 8.x |
+| Thymeleaf | 3.1.2 |
+| Hibernate | 6.3.1 |
+| Bootstrap | 5.3.2 |
+| iText PDF | 4.2.2 |
 
 ## Estructura del Proyecto
 
 ```
 SST/
-├── planeacion/          # Documentos de planificación y diseño
-│   ├── 01-propuesta-software.md
-│   ├── 02-diagrama-flujo.md
-│   ├── 03-diseno-software.md
-│   ├── 04-estructura-codigo.md
-│   ├── diseno-web/      # Diseño web estático
-│   └── uml/             # Diagramas UML
-├── src/
-│   ├── main/
-│   │   ├── java/com/sst/registro/
-│   │   │   ├── config/      # Configuraciones de Spring
-│   │   │   ├── controller/  # Controladores REST y web
-│   │   │   ├── model/       # Entidades JPA y DTOs
-│   │   │   │   ├── entity/  # Entidades: Usuario, Evento, Investigacion, AccionCorrectiva
-│   │   │   │   └── enums/   # Enums: RolUsuario, EstadoAccion
-│   │   │   ├── repository/  # Repositorios JPA
-│   │   │   ├── service/     # Servicios de negocio
-│   │   │   └── util/        # Utilidades
-│   │   └── resources/
-│   │       ├── application.properties  # Configuración
-│   │       ├── static/     # CSS, JS, imágenes
-│   │       └── templates/  # Plantillas Thymeleaf
-│   └── test/               # Pruebas unitarias e integración
-├── pom.xml                # Configuración Maven
-├── SST.iml                # Archivo IntelliJ
-└── target/                # Archivos compilados
+├── src/main/
+│   ├── java/com/sst/registro/
+│   │   ├── SgsstApplication.java      # Main class
+│   │   ├── config/
+│   │   │   ├── SecurityConfig.java   # Spring Security
+│   │   │   ├── PasswordEncoderConfig.java
+│   │   │   ├── DataInitializer.java  # Datos iniciales
+│   │   │   └── WebConfig.java
+│   │   ├── controller/
+│   │   │   ├── LoginController.java
+│   │   │   ├── DashboardController.java
+│   │   │   ├── EventoController.java
+│   │   │   ├── InvestigacionController.java
+│   │   │   ├── EstadisticaController.java
+│   │   │   └── UsuarioController.java
+│   │   ├── model/
+│   │   │   ├── entity/
+│   │   │   │   ├── Usuario.java
+│   │   │   │   ├── Evento.java
+│   │   │   │   ├── Investigacion.java
+│   │   │   │   └── AccionCorrectiva.java
+│   │   │   └── enums/
+│   │   │       ├── RolUsuario.java
+│   │   │       ├── TipoEvento.java
+│   │   │       ├── Gravedad.java
+│   │   │       ├── EstadoEvento.java
+│   │   │       └── EstadoAccion.java
+│   │   ├── repository/
+│   │   │   ├── UsuarioRepository.java
+│   │   │   ├── EventoRepository.java
+│   │   │   ├── InvestigacionRepository.java
+│   │   │   └── AccionCorrectivaRepository.java
+│   │   └── service/
+│   │       ├── UsuarioService.java
+│   │       ├── EventoService.java
+│   │       ├── InvestigacionService.java
+│   │       ├── EstadisticaService.java
+│   │       └── ReporteService.java    # Generación PDF
+│   └── resources/
+│       ├── application.properties
+│       └── templates/
+│           ├── layout/base.html
+│           ├── login/login.html
+│           ├── dashboard/dashboard.html
+│           ├── evento/
+│           │   ├── lista.html
+│           │   ├── detalle.html
+│           │   ├── formulario.html
+│           ├── investigacion/
+│           │   ├── detalle.html
+│           │   └── formulario.html
+│           ├── estadistica/estadisticas.html
+│           └── usuario/
+│               ├── lista.html
+│               └── formulario.html
+├── pom.xml
+└── README.md
 ```
 
-## Instalación y Configuración
+## Instalación
 
 ### Prerrequisitos
 
-- Java 17 o superior
-- Maven 3.6+
-- MySQL 8.0+ (para producción) o H2 (para desarrollo)
+- Java 17
+- MySQL 8.x (o H2 para desarrollo)
 
-### Configuración de la Base de Datos
+### Configuración
 
-#### Opción 1: Usar H2 (Recomendado para desarrollo)
-
-H2 está configurado por defecto. No requiere instalación adicional.
-
-- La base de datos se crea en memoria.
-- Accede a la consola H2 en: `http://localhost:8080/h2-console`
-  - JDBC URL: `jdbc:h2:mem:sgsst`
-  - Usuario: `sa`
-  - Contraseña: (vacía)
-
-#### Opción 2: Usar MySQL
-
-1. Instala MySQL Server.
-2. Crea la base de datos `sgsst` (opcional, se crea automáticamente).
-3. Configura el usuario root con contraseña 'root'.
-
-##### Configuración de Contraseña Root en MySQL
-
-###### Windows
-
-1. Abre la línea de comandos como administrador (busca "cmd", haz clic derecho y "Ejecutar como administrador").
-2. Detén el servicio MySQL:  
-   `sc stop MySQL90`
-3. Inicia MySQL sin autenticación:  
-   `"C:\Program Files\MySQL\MySQL Server 9.0\bin\mysqld.exe" --skip-grant-tables --user=mysql`
-4. En otra ventana de cmd (como administrador), conecta:  
-   `"C:\Program Files\MySQL\MySQL Server 9.0\bin\mysql.exe" -u root`
-5. Dentro de MySQL, ejecuta:  
-   ```sql
-   ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
-   FLUSH PRIVILEGES;
-   EXIT;
+1. Clonar el repositorio
+2. Configurar `application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/sgsst
+   spring.datasource.username=root
+   spring.datasource.password=tuclavesql
    ```
-6. Detén el proceso mysqld (presiona Ctrl+C en la ventana donde lo iniciaste).
-7. Inicia el servicio:  
-   `sc start MySQL90`
 
-###### Linux
+### Ejecutar
 
-1. Detén el servicio MySQL:  
-   `sudo systemctl stop mysql`
-2. Inicia MySQL en modo seguro:  
-   `sudo mysqld_safe --skip-grant-tables --user=mysql &`
-3. Conecta sin contraseña:  
-   `mysql -u root`
-4. Dentro de MySQL, ejecuta:  
-   ```sql
-   ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
-   FLUSH PRIVILEGES;
-   EXIT;
-   ```
-5. Detén el proceso mysqld_safe (encuéntralo con `ps aux | grep mysqld` y mata con `kill`).
-6. Inicia el servicio:  
-   `sudo systemctl start mysql`
+```bash
+# Con Maven
+mvn spring-boot:run
 
-### Compilación y Ejecución
+# O desde IntelliJ
+Build > Rebuild Project
+Run > SgsstApplication
+```
 
-1. Clona el repositorio:  
-   `git clone <url-del-repositorio>`
+### Credenciales por Defecto
 
-2. Navega al directorio del proyecto:  
-   `cd SST`
+- **Usuario:** `admin@sgsst.com`
+- **Contraseña:** `admin123`
 
-3. Compila el proyecto:  
-   `mvn clean compile`
+## Uso
 
-4. Ejecuta la aplicación:  
-   `mvn spring-boot:run`
+### Roles de Usuario
 
-5. Accede a la aplicación en: `http://localhost:8080`
+| Rol | Permisos |
+|-----|--------|
+| ADMIN | Todo |
+| RESPONSABLE_SST | Ver/crear eventos, investigar, estadísticas |
+| JEFE_AREA | Ver/crear eventos de su área |
+| TRABAJADOR | Reportar incidentes |
 
-### Configuración de Seguridad
+### Endpoints
 
-Por defecto, la aplicación usa Spring Security con un usuario básico:
-- Usuario: `admin`
-- Contraseña: `admin123`
+| URL | Descripción |
+|-----|-------------|
+| `/login` | Inicio de sesión |
+| `/dashboard` | Panel principal |
+| `/evento/lista` | Lista de eventos |
+| `/evento/nuevo` | Nuevo evento |
+| `/evento/detalle/{id}` | Detalle de evento |
+| `/estadisticas` | Estadísticas |
+| `/admin/usuarios` | Gestión de usuarios |
 
-Para producción, configura usuarios reales en la base de datos.
+### Exportar PDF
 
-## API Endpoints
+- **Lista de eventos:** `/evento/exportar/pdf`
+- **Evento individual:** `/evento/exportar/{id}/pdf`
+- **Estadísticas:** `/estadisticas/exportar/pdf`
 
-La aplicación incluye endpoints REST para gestión de datos. Algunos ejemplos:
+## Versiones
 
-- `GET /api/usuarios` - Lista de usuarios
-- `POST /api/eventos` - Crear evento
-- `GET /api/investigaciones` - Lista de investigaciones
-
-## Contribución
-
-1. Fork el proyecto.
-2. Crea una rama para tu feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit tus cambios: `git commit -am 'Agrega nueva funcionalidad'`
-4. Push a la rama: `git push origin feature/nueva-funcionalidad`
-5. Crea un Pull Request.
+- **v2.0.0** - PDF mejorados, MySQL funciona
+- **v1.0.0** - Versión inicial
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detalles.
-
-## Contacto
-
-Para preguntas o soporte, contacta al equipo de desarrollo.</content>
-<parameter name="filePath">C:\Users\ESTUDIANTES\IdeaProjects\SST\README.md
+MIT
