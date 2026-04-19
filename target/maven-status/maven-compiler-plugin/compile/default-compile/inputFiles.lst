@@ -1,6 +1,7 @@
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/enums/TipoEvento.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/entity/Usuario.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/controller/EstadisticaController.java
+/home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/config/PasswordEncoderConfig.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/service/UsuarioService.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/entity/Investigacion.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/enums/RolUsuario.java
@@ -10,6 +11,7 @@
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/entity/AccionCorrectiva.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/model/enums/Gravedad.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/service/EstadisticaService.java
+/home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/service/ReporteService.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/config/SecurityConfig.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/repository/InvestigacionRepository.java
 /home/bjzr/Proyectos/java/sst/SST/src/main/java/com/sst/registro/controller/EventoController.java

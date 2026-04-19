@@ -1,0 +1,20 @@
+###########################################
+#   Script para ejecutar la app SST
+###########################################
+
+echo ""
+echo "=========================================="
+echo "   INICIANDO APP SST - H2 Database"
+echo "=========================================="
+echo ""
+echo "1. Abri IntelliJ"
+echo "2. Build > Rebuild Project"
+echo "3. Run > Run 'SgsstApplication'"
+echo "4. Abrir: http://localhost:8080"
+echo ""
+echo "Usuario: admin@sgsst.com"
+echo "Password: admin123"
+echo ""
+echo "La base de datos H2 se crea automaticamente."
+echo ""
+echo "=========================================="
