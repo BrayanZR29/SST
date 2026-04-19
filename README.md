@@ -31,7 +31,15 @@ SST es una aplicación web desarrollada con Spring Boot para la gestión de segu
 
 ```
 SST/
-├── src/main/
+├── planeacion/          # Documentos de planificación y diseño
+│   ├── 01-propuesta-software.md
+│   ├── 02-diagrama-flujo.md
+│   ├── 03-diseno-software.md
+│   ├── 04-estructura-codigo.md
+│   ├── diseno-web/      # Diseño web estático
+│   └── uml/             # Diagramas UML
+├── src/
+│   ├── main/
 │   ├── java/com/sst/registro/
 │   │   ├── SgsstApplication.java      # Main class
 │   │   ├── config/
@@ -78,7 +86,7 @@ SST/
 │           ├── evento/
 │           │   ├── lista.html
 │           │   ├── detalle.html
-│           │   ├── formulario.html
+│           │   └── formulario.html
 │           ├── investigacion/
 │           │   ├── detalle.html
 │           │   └── formulario.html
