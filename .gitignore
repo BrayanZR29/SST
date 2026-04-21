@@ -31,3 +31,9 @@ bin/
 
 ### Build ###
 target/
+*.jar
+*.war
+*.ear
+
+### Logs ###
+*.log
