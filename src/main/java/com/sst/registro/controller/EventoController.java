@@ -38,17 +38,34 @@ public class EventoController {
             @RequestParam(required = false) TipoEvento tipo,
             @RequestParam(required = false) Gravedad gravedad,
             @RequestParam(required = false) String lugar,
+            @RequestParam(required = false) String codigo,
+            @RequestParam(required = false) String fechaInicio,
+            @RequestParam(required = false) String fechaFin,
             Model model) {
+        
+        LocalDateTime inicio = null;
+        LocalDateTime fin = null;
+        try {
+            if (fechaInicio != null && !fechaInicio.isEmpty()) {
+                inicio = LocalDateTime.parse(fechaInicio + "T00:00:00");
+            }
+            if (fechaFin != null && !fechaFin.isEmpty()) {
+                fin = LocalDateTime.parse(fechaFin + "T23:59:59");
+            }
+        } catch (Exception e) {}
         
         PageRequest pageable = PageRequest.of(page, 10, Sort.by("fechaCreacion").descending());
         Page<Evento> eventos = eventoService.buscarConFiltros(
-                estado, tipo, gravedad, lugar, null, null, pageable);
+                estado, tipo, gravedad, lugar, codigo, inicio, fin, pageable);
         
         model.addAttribute("eventos", eventos);
         model.addAttribute("estado", estado);
         model.addAttribute("tipo", tipo);
         model.addAttribute("gravedad", gravedad);
         model.addAttribute("lugar", lugar);
+        model.addAttribute("codigo", codigo);
+        model.addAttribute("fechaInicio", fechaInicio);
+        model.addAttribute("fechaFin", fechaFin);
         
         return "evento/lista";
     }
@@ -102,13 +119,14 @@ public class EventoController {
             @RequestParam(required = false) EstadoEvento estado,
             @RequestParam(required = false) TipoEvento tipo,
             @RequestParam(required = false) Gravedad gravedad,
-            @RequestParam(required = false) String lugar) throws Exception {
+            @RequestParam(required = false) String lugar,
+            @RequestParam(required = false) String codigo) throws Exception {
         
         Page<Evento> eventosPage;
-        if (estado == null && tipo == null && gravedad == null && (lugar == null || lugar.isEmpty())) {
+        if (estado == null && tipo == null && gravedad == null && (lugar == null || lugar.isEmpty()) && (codigo == null || codigo.isEmpty())) {
             eventosPage = eventoService.listarTodos(PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending()));
         } else {
-            eventosPage = eventoService.buscarConFiltros(estado, tipo, gravedad, lugar, null, null, 
+            eventosPage = eventoService.buscarConFiltros(estado, tipo, gravedad, lugar, codigo, null, null, 
                 PageRequest.of(0, 1000, Sort.by("fechaCreacion").descending()));
         }
         

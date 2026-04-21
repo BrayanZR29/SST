@@ -61,9 +61,9 @@ public class EventoService {
     
     public Page<Evento> buscarConFiltros(
             EstadoEvento estado, TipoEvento tipo, Gravedad gravedad,
-            String lugar, LocalDateTime fechaInicio, LocalDateTime fechaFin,
+            String lugar, String codigo, LocalDateTime fechaInicio, LocalDateTime fechaFin,
             Pageable pageable) {
-        return eventoRepository.buscarConFiltros(estado, tipo, gravedad, lugar, fechaInicio, fechaFin, pageable);
+        return eventoRepository.buscarConFiltros(estado, tipo, gravedad, lugar, codigo, fechaInicio, fechaFin, pageable);
     }
     
     public List<Evento> listarRecientes() {

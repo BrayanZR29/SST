@@ -33,12 +33,13 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
            "(:estado IS NULL OR e.estado = :estado) AND " +
            "(:tipo IS NULL OR e.tipo = :tipo) AND " +
            "(:gravedad IS NULL OR e.gravedad = :gravedad) AND " +
-           "(:lugar IS NULL OR e.lugar = :lugar) AND " +
+           "(:lugar IS NULL OR LOWER(e.lugar) LIKE LOWER(CONCAT('%', :lugar, '%'))) AND " +
+           "(:codigo IS NULL OR LOWER(e.codigo) LIKE LOWER(CONCAT('%', :codigo, '%'))) AND " +
            "(:fechaInicio IS NULL OR e.fechaHora >= :fechaInicio) AND " +
            "(:fechaFin IS NULL OR e.fechaHora <= :fechaFin)")
     Page<Evento> buscarConFiltros(
             EstadoEvento estado, TipoEvento tipo, Gravedad gravedad,
-            String lugar, LocalDateTime fechaInicio, LocalDateTime fechaFin,
+            String lugar, String codigo, LocalDateTime fechaInicio, LocalDateTime fechaFin,
             Pageable pageable);
     
     List<Evento> findTop10ByOrderByFechaCreacionDesc();
