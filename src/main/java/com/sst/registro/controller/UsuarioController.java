@@ -47,4 +47,16 @@ public class UsuarioController {
         usuarioService.eliminar(id);
         return "redirect:/admin/usuarios";
     }
+    
+    @GetMapping("/password/{id}")
+    public String password(@PathVariable Long id, Model model) {
+        model.addAttribute("usuario", usuarioService.buscarPorId(id));
+        return "usuario/password";
+    }
+    
+    @PostMapping("/password/{id}")
+    public String guardarPassword(@PathVariable Long id, @RequestParam String password) {
+        usuarioService.cambiarPassword(id, password);
+        return "redirect:/admin/usuarios";
+    }
 }

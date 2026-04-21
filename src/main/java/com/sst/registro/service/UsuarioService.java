@@ -74,4 +74,11 @@ public class UsuarioService implements UserDetailsService {
             usuarioRepository.save(admin);
         }
     }
+    
+    @Transactional
+    public void cambiarPassword(Long usuarioId, String nuevaPassword) {
+        Usuario usuario = buscarPorId(usuarioId);
+        usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+        usuarioRepository.save(usuario);
+    }
 }
